@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+
+def getVersionName()
+{
+    return '1.3.1-SNAPSHOT'
+}
+
+def getGroupName()
+{
+    return 'DownloadLib'
+}
+
+group = getGroupName()
+version = getVersionName()
+
+configurations { //adiciona a função de criação de pom nos passos de configurações
+    criarPom
+}
+
+task createPom { //task pra criação do POM corretamente para descrição no repositório
+    ext.newPomFile = "${buildDir}/${groupName}-${versionName}.pom"//formato
+    doLast {
+        pom {
+            project {
+                packaging 'aar'
+            }
+        }.writeTo(newPomFile)
+    }
+}
+preBuild.dependsOn(createPom) //Gera o pom antes de buildar
+
+
+
+
+artifacts {
+    criarPom file(createPom.newPomFile)//cria pom apenas para artefatos
+}
+
+
+
+
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+
+        }
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
