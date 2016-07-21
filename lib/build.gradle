@@ -4,7 +4,7 @@ apply plugin: 'maven'
 
 def getVersionName()
 {
-    return '1.3.2.1'
+    return '1.4-SNAPSHOT'
 }
 
 def getGroupName()
@@ -67,4 +67,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:23.3.0'
+
+
 }

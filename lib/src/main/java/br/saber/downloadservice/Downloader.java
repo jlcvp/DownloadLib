@@ -17,11 +17,15 @@ import java.security.MessageDigest;
 import br.saber.downloadservice.database.RepositorioService;
 import br.saber.downloadservice.models.Downloadable;
 import br.saber.downloadservice.models.FilaPrioritaria;
+
+import android.app.NotificationManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StatFs;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class Downloader {
@@ -31,7 +35,6 @@ public class Downloader {
         void onLackofStorage(long bytesNeeded);
     }
     public static final String LOG_TAG = "DEBUG_SERVICE";
-
     private onLackOfStorageSpaceListener mListener;
     public static final String PROGRESS_ACTION = "br.saber.downloadservice.progress_action";
 
@@ -75,6 +78,8 @@ public class Downloader {
     Handler downloadHandler;
     int currentTries;
 
+    NotificationManager manager;
+
     public Downloader(Context appContext, FilaPrioritaria queue)
     {
         this.ctx = appContext;
@@ -84,6 +89,7 @@ public class Downloader {
 
         currentDownload=null;
         bg_thread = null;
+        manager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
         //obsoleto, esse stub era necessario com a antiga certificação do ARES //não deletar, ainda pode ser usado
         //		System.setProperty("javax.net.ssl.trustStore","ares.jks");
@@ -171,13 +177,34 @@ public class Downloader {
 
             bg_thread=	new DownloadTask(false);
             bg_thread.execute(currentDownload.url, currentDownload.path_destino);//executando download na AsyncTask
+
             Log.v(LOG_TAG, "download iniciado -> "+currentDownload.id_arquivo);
+            showProgressNotification(currentDownload.id_int,"Estante Title","baixando...");
         }
         else
         {
             Log.v(LOG_TAG, "download já iniciado ou fila vazia, no donut for you");
         }
 
+    }
+
+    private void hideProgressNotification(int id)
+    {
+        manager.cancel(id);
+    }
+
+    private void showProgressNotification(int notificationId, String title, String message)
+    {
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this.ctx);
+
+        mBuilder.setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setTicker("")
+                .setProgress(0, 0, true);
+
+        manager.notify(notificationId, mBuilder.build());
     }
 
     public void getNextDownload() {
@@ -202,7 +229,7 @@ public class Downloader {
                 //removerRegistro do Bd
                 removeCurrentFromDB();
 
-
+                hideProgressNotification(currentDownload.id_int);
                 currentDownload = null;
                 currentTries=0;
             }
