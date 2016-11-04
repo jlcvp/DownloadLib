@@ -4,10 +4,15 @@ apply plugin: 'maven'
 
 def getVersionName()
 {
-    return '1.3.2.1'
+    return '1.3.3'
 }
 
 def getGroupName()
+{
+    return 'br.com.jlcvp'
+}
+
+def getArtifactName()
 {
     return 'DownloadLib'
 }
@@ -20,7 +25,7 @@ configurations { //adiciona a função de criação de pom nos passos de configu
 }
 
 task createPom { //task pra criação do POM corretamente para descrição no repositório
-    ext.newPomFile = "${buildDir}/${groupName}-${versionName}.pom"//formato
+    ext.newPomFile = "${buildDir}/${artifactName}-${versionName}.pom"//formato
     doLast {
         pom {
             project {
