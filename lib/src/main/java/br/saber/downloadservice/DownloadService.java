@@ -29,7 +29,7 @@ import br.saber.downloadservice.models.FilaPrioritaria;
 public class DownloadService extends Service implements Downloader.onLackOfStorageSpaceListener {
 	public static final String ACTION_START_AND_UNBLOCK = "br.saber.downloadlib.service.ACTION_START";
 	public static final String ACTION_CANCEL = "br.saber.downloadlib.service.ACTION_CANCEL";
-	public static final String PROGRESS_ACTION = "br.saber.downloadservice.progress_action";
+	public static final String PROGRESS_ACTION = Downloader.PROGRESS_ACTION;
 	public static final String DOWNLOADSERVICE_MANAGER = "br.saber.downloadService";
     public static final String STORAGE_BYTES_NEEDED = "br.saber.downloadService.STORAGE_BYTES_NEEDED";
     public static final String STORAGE_FULL_ACTION = "br.saber.downloadService.STORAGE_FULL";

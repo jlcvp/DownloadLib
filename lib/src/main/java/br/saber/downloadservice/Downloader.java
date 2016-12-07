@@ -154,7 +154,7 @@ public class Downloader {
 
     private void downloadCancelado(String id) {
         Intent it = new Intent(DOWNLOAD_CANCELED_ACTION);
-        it.putExtra(CURRENT_ID, id);
+        it.putExtra(CURRENT_CODIGO, id);
         ctx.sendBroadcast(it);
 
     }
@@ -227,7 +227,7 @@ public class Downloader {
     {
         Intent it = new Intent(DOWNLOAD_STARTED_ACTION);
         it.putExtra(CURRENT_URL, currentDownload.url);
-        it.putExtra(CURRENT_ID, currentDownload.id_arquivo);
+        it.putExtra(CURRENT_CODIGO, currentDownload.id_arquivo);
         it.putExtra(CURRENT_PATH, currentDownload.path_destino);
 
         ctx.sendBroadcast(it);
@@ -309,7 +309,7 @@ public class Downloader {
     private void broadcastDownloadTerminado() {
         Intent it = new Intent(DOWNLOAD_TERMINATED_ACTION);
         it.putExtra(CURRENT_URL, currentDownload.url);
-        it.putExtra(CURRENT_ID, currentDownload.id_arquivo);
+        it.putExtra(CURRENT_CODIGO, currentDownload.id_arquivo);
         it.putExtra(CURRENT_PATH, currentDownload.path_destino);
         it.putExtra(HAS_NEXT, queue.isEmpty());
         it.putExtra(CURRENT_TIME, currentDownload.tempo);
@@ -662,7 +662,7 @@ public class Downloader {
             Intent it = new Intent(PROGRESS_ACTION);
             it.putExtra(CURRENT_URL,currentDownload.url);
             it.putExtra(CURRENT_PROGRESS, values[0]);
-            it.putExtra(CURRENT_ID, currentDownload.id_arquivo);
+            it.putExtra(CURRENT_CODIGO, currentDownload.id_arquivo);
             ctx.sendBroadcast(it);
 
         }
