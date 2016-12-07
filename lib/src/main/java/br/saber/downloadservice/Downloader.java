@@ -78,21 +78,14 @@ public class Downloader {
     public Downloader(Context appContext, FilaPrioritaria queue)
     {
         this.ctx = appContext;
-        mListener = (onLackOfStorageSpaceListener)appContext;
+        mListener = (onLackOfStorageSpaceListener)appContext; //DANGER DANGER
         this.queue = queue;
         downloadHandler = new Handler();
 
         currentDownload=null;
         bg_thread = null;
 
-        //obsoleto, esse stub era necessario com a antiga certificação do ARES //não deletar, ainda pode ser usado
-        //		System.setProperty("javax.net.ssl.trustStore","ares.jks");
-        //        System.setProperty("javax.net.ssl.trustStorePassword","sever1n0"); //keystores específica com o certificado para o ARES.
-        //        System.setProperty("javax.net.ssl.trustStoreType","JKS");
-        //
-        //        System.setProperty("javax.net.ssl.keyStore","ares.jks");
-        //        System.setProperty("javax.net.ssl.keyStorePassword","sever1n0");
-        //        System.setProperty("javax.net.ssl.keyStoreType","JKS");
+
 
 
     }
