@@ -234,13 +234,21 @@ public class Downloader {
      */
     private boolean isFileMD5Correct(){
         boolean ret = false;
-        try {
-            if (currentDownload.md5.equals(getFileMD5(currentDownload.path_destino))) ret = true;
-        } catch (IOException e) {
-            Log.e("DEBUG", "IOException no MD5");
-        } catch (NullPointerException e){
-            Log.e("DEBUG", "Null pointer exception, dados a partir desse ponto não são confiáveis");
+        if(currentDownload.md5 !=null) {
+            try {
+                if (currentDownload.md5.equals(getFileMD5(currentDownload.path_destino)))
+                    ret = true;
+            } catch (IOException e) {
+                Log.e("DEBUG", "IOException no MD5");
+            } catch (NullPointerException e) {
+                Log.e("DEBUG", "Null pointer exception, dados a partir desse ponto não são confiáveis");
+            }
+
         }
+        else{
+            ret = true; //skip md5verification
+        }
+
         return ret;
     }
 
