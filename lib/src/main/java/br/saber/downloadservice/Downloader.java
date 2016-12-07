@@ -78,21 +78,14 @@ public class Downloader {
     public Downloader(Context appContext, FilaPrioritaria queue)
     {
         this.ctx = appContext;
-        mListener = (onLackOfStorageSpaceListener)appContext;
+        mListener = (onLackOfStorageSpaceListener)appContext; //DANGER DANGER
         this.queue = queue;
         downloadHandler = new Handler();
 
         currentDownload=null;
         bg_thread = null;
 
-        //obsoleto, esse stub era necessario com a antiga certificação do ARES //não deletar, ainda pode ser usado
-        //		System.setProperty("javax.net.ssl.trustStore","ares.jks");
-        //        System.setProperty("javax.net.ssl.trustStorePassword","sever1n0"); //keystores específica com o certificado para o ARES.
-        //        System.setProperty("javax.net.ssl.trustStoreType","JKS");
-        //
-        //        System.setProperty("javax.net.ssl.keyStore","ares.jks");
-        //        System.setProperty("javax.net.ssl.keyStorePassword","sever1n0");
-        //        System.setProperty("javax.net.ssl.keyStoreType","JKS");
+
 
 
     }
@@ -154,7 +147,7 @@ public class Downloader {
 
     private void downloadCancelado(String id) {
         Intent it = new Intent(DOWNLOAD_CANCELED_ACTION);
-        it.putExtra(CURRENT_ID, id);
+        it.putExtra(CURRENT_CODIGO, id);
         ctx.sendBroadcast(it);
 
     }
@@ -227,7 +220,7 @@ public class Downloader {
     {
         Intent it = new Intent(DOWNLOAD_STARTED_ACTION);
         it.putExtra(CURRENT_URL, currentDownload.url);
-        it.putExtra(CURRENT_ID, currentDownload.id_arquivo);
+        it.putExtra(CURRENT_CODIGO, currentDownload.id_arquivo);
         it.putExtra(CURRENT_PATH, currentDownload.path_destino);
 
         ctx.sendBroadcast(it);
@@ -241,13 +234,21 @@ public class Downloader {
      */
     private boolean isFileMD5Correct(){
         boolean ret = false;
-        try {
-            if (currentDownload.md5.equals(getFileMD5(currentDownload.path_destino))) ret = true;
-        } catch (IOException e) {
-            Log.e("DEBUG", "IOException no MD5");
-        } catch (NullPointerException e){
-            Log.e("DEBUG", "Null pointer exception, dados a partir desse ponto não são confiáveis");
+        if(currentDownload.md5 !=null) {
+            try {
+                if (currentDownload.md5.equals(getFileMD5(currentDownload.path_destino)))
+                    ret = true;
+            } catch (IOException e) {
+                Log.e("DEBUG", "IOException no MD5");
+            } catch (NullPointerException e) {
+                Log.e("DEBUG", "Null pointer exception, dados a partir desse ponto não são confiáveis");
+            }
+
         }
+        else{
+            ret = true; //skip md5verification
+        }
+
         return ret;
     }
 
@@ -309,7 +310,7 @@ public class Downloader {
     private void broadcastDownloadTerminado() {
         Intent it = new Intent(DOWNLOAD_TERMINATED_ACTION);
         it.putExtra(CURRENT_URL, currentDownload.url);
-        it.putExtra(CURRENT_ID, currentDownload.id_arquivo);
+        it.putExtra(CURRENT_CODIGO, currentDownload.id_arquivo);
         it.putExtra(CURRENT_PATH, currentDownload.path_destino);
         it.putExtra(HAS_NEXT, queue.isEmpty());
         it.putExtra(CURRENT_TIME, currentDownload.tempo);
@@ -662,7 +663,7 @@ public class Downloader {
             Intent it = new Intent(PROGRESS_ACTION);
             it.putExtra(CURRENT_URL,currentDownload.url);
             it.putExtra(CURRENT_PROGRESS, values[0]);
-            it.putExtra(CURRENT_ID, currentDownload.id_arquivo);
+            it.putExtra(CURRENT_CODIGO, currentDownload.id_arquivo);
             ctx.sendBroadcast(it);
 
         }

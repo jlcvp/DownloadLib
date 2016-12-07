@@ -1,5 +1,5 @@
 include ':lib'
 
 rootProject.name = 'DownloadLib'
-rootProject.children.each { it.name = rootProject.name }
+//rootProject.children.each { it.name = 'lib' }
 

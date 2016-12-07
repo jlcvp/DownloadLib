@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DownloadLib.iml" filepath="$PROJECT_DIR$/DownloadLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/DownloadLib-DownloadLib.iml" filepath="$PROJECT_DIR$/lib/DownloadLib-DownloadLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
     </modules>
   </component>
 </project>
